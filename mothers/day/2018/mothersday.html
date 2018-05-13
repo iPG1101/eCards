@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Happy Mothers Day</title>
+	<style>
+		video, canvas {
+			width: 100vw;
+			height: 100vh;
+			left: 0;
+			top: 0;
+			position: absolute;
+		}
+		body, html {
+			width: 100vw;
+			height: 100vh;
+			overflow: hidden;
+			background: black;
+		}
+	</style>
+</head>
+<body>
+	<video autoplay loop>
+  	  <source id='mp4' class='src' src="222.mp4" type="video/mp4">
+  	  <source id='webm' class='src' src="222.webm" type="video/mp4">
+  	  <source id='3gp' class='src' src="222.3gp" type="video/mp4">
+	  <source id='mp3' class='src' src="222.mp3" type="audio/mp3">
+	  You're missing out. Please update.
+	</video> 
+	<script type="text/javascript" src="https://cdn.rawgit.com/alexgibson/shake.js/master/shake.js"></script>
+	<script>
+		
+		var cvs = document.body.appendChild(document.createElement('canvas'));
+		var ctx = cvs.getContext('2d');
+		var shakeEvent = new Shake({threshold: 12});
+	    shakeEvent.start();
+	    var song = '222';
+	    ffs = function(e={preventDefault:function(){}}	){e.preventDefault();
+			document.querySelectorAll('video')[0].pause();
+			for(var i of document.querySelectorAll('source.src')) {
+				i.src = ({
+					'222': 'in_private',
+					'in_private': '222'
+				})[i.getAttribute('src').split('.')[0]] + '.' + i.id;
+				song = i.src.includes('222') ? '222' : 'in_private';
+			};
+			if(song == '222') {
+				document.querySelectorAll('video')[0].style.display = 'block';
+				cvs.clear = function(){cvs.width ++; cvs.width --;};
+				cvs.style.background = 'rgba(0,0,0,0)'
+			} else {
+				document.querySelectorAll('video')[0].style.display = 'none';
+				cvs.clear = function(){ctx.fillRect(0,0,cvs.width,cvs.height)}
+			}
+			document.querySelectorAll('video')[0].load();
+			document.querySelectorAll('video')[0].play();
+		}
+		window.addEventListener('shake', ffs)
+		window.addEventListener('contextmenu', ffs)
+				cvs.clear = function(){cvs.width ++; cvs.width --}
+		cvs.width = 111;
+		cvs.height = 111;
+		var confetti = function(id,x=Math.random()*50+25,y=-1){
+			this.x = x;
+			this.y = y;
+			this.velx = Math.random()*10-5;
+			this.vely = -0.1;
+			this.px = x-this.velx;
+			this.py = y-this.vely;
+			this.grav = 0.04;
+			this.show = function(){
+				this.vely+=this.grav;
+				this.px = this.x;
+				this.py = this.y;
+				this.y+=this.vely;
+				this.x+=this.velx;
+				this.velx*=1.01;
+				this.vely*=1.05;
+				ctx.moveTo(this.px, this.py);
+				ctx.lineTo(this.x,  this.y );
+				ctx.lineWidth = 2;
+				ctx.strokeStyle = 'white';
+				ctx.stroke();
+				if(this.x < 0 || this.x > 111 || this.y > 111) {
+					this.x=Math.random()*50+25
+					this.velx = Math.random()*4-2;
+					this.vely = -0.1;
+					this.y = -1;
+				}
+			};
+		};
+		var c = [];
+		for(;c.length<10;)c.push(new confetti(c.length-1))
+		setInterval(function(){
+			cvs.clear()
+			for(var i in c) {c[i].show()};
+		}, 50);
+	var ccc = '<center><h1 style=\'position:relative; top: 40vh; color: white; font-size: 300%; font-family: Lucida Console, bold, italic, monospace\'>Happy Mothers Day!</h1></center>';
+	document.body.innerHTML+=ccc;
+	</script>
+</body>
+</html>
